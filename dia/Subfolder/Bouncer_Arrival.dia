@@ -1,0 +1,103 @@
+
+WAIT Bouncer.IsNotAtTask(Work) LISTEN Sebastian_talk_Bouncer {
+    Bouncer "Tja"
+    FOCUS
+    CHOICE {
+        "Tja":
+        "God dag":
+    }
+    Bouncer "Läget?"
+    CHOICE {
+        "Det är kalas!":
+        "Vänta, har vi setts förrut?":
+    }
+    Bouncer "Jag vet inte! Har vi?"
+    CHOICE {
+        "Hmm... kanske?":
+        "Nej tror inte det":
+        "Jo, jag är ganska säker på det":
+    }
+    Bouncer "Jag jobbar på Bar Yvonne ibland"
+    Bouncer "Det kanske är där som du har sett mig..?"
+    CHOICE {
+        "Ja, självklart!":
+            Bouncer "OK, skönt"
+            Bouncer "Gillar du Yvonne?"
+            CHOICE {
+                "Ja, det är toppen!":
+                "Vet inte än...":
+                    Bouncer "Du borde gå dit igen, ofta riktigt bra häng där alltså"
+            }
+
+        "Hmm... nej det tror jag inte...":
+            Bouncer "Nej OK, då vet jag inte"
+
+        "Nej, vad är det?":
+            Bouncer "Bästa hänget i stan, ligger på Plaza"
+            Bouncer "Du är över 18 va?"
+            CHOICE {
+                "Jo":
+                    Bouncer "Gött! Du borde dra dit ikväll"
+                "Nej, tyvärr inte":
+                    Bouncer "Ok, det var synd!"
+            }
+    }
+    DEFOCUS
+
+    [YO]
+    WAIT Bouncer.IsNotAtTask(Work) LISTEN Sebastian_talk_Bouncer
+    Bouncer "Yo"
+    GOTO YO
+}
+
+
+# When working:
+
+
+WAIT Sebastian.IsWithinDistance(Bouncer, 10) AND Bouncer.IsAtTask(Work)
+
+IF Sebastian.IsWithinDistance(Plaza_DoorToBarYvonne, 10) {
+    # coming from the bar
+    Bouncer "Hoppas ni haft en bra kväll!"
+    WAIT 20
+    GOTO BOUNCING
+}
+
+FOCUS
+Bouncer.StartTalking()
+Bouncer "Ey, ska du till Bar Yvonne?"
+Bouncer "Du är över 18 va?"
+
+CHOICE {
+    "Eh, ja självklart":
+        GOTO WELCOME
+    "Va? Jodå!":
+        [WELCOME]
+        Bouncer "Ok, välkommen in"
+    "Njae...":
+        Bouncer.SetKnowledge("Underage")
+        Bouncer "Jag får inte släppa in minderåriga"
+        CHOICE {
+            "OK, jag tänkte inte gå in ändå":
+                Bouncer "OK"
+            "Nähä... synd":
+                Bouncer "Mm"
+        }
+}
+DEFOCUS
+
+Bouncer.StopTalking()
+
+WAIT 20
+
+[BOUNCING]
+WAIT Sebastian.IsWithinDistance(Bouncer, 15) AND Bouncer.IsAtTask(Work)
+IF Bouncer.HasKnowledge("Underage") {
+    Bouncer "Inga underåriga!"
+} ELSE {
+    Bouncer "God kväll!"
+}
+WAIT 20
+GOTO BOUNCING
+
+

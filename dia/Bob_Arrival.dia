@@ -1,0 +1,107 @@
+LISTEN Sebastian_talk_Bob
+
+Sebastian "Yeah!!!"
+
+FOCUS
+Bob.StartTalking()
+Bob "Ja?"
+CHOICE {
+	"Hej!":
+		Bob "Tjena, vad händer?"
+		CHOICE {
+			"Jag ville bara snacka med någon":
+				Bob "Ok, ok"
+				Bob "Allt väl?"
+
+			"Inte mycket... tänkte bara kolla läget":
+				Bob.StartAction("Shrug")
+				Bob "Jo det det är rätt så bra, själv?"
+		}
+
+		CHOICE {
+			"Jag mår prima":
+				Bob "Härligt"
+			"Det funkar":
+				Bob "Ok"
+			"Är lite vilse, jag letar efter mitt hotell":
+				Sebastian "Du råkar inte veta var det ligger?"
+				Bob.StartAction("Shrug")
+				Bob "Hmm..."
+				Bob "Nej ingen aning"
+				GOTO TOURIST_OFFICE
+		}
+
+	"Hejsan, vad gör du?":
+		Bob.StartAction("Shrug")
+		Bob "Jag hänger bara, har inget speciellt för mig."
+
+	"Ursäkta mig, var ligger hotellet?":
+		Bob.StartAction("Shrug")
+		Bob "Eh... jag vet inte"
+		[TOURIST_OFFICE]
+		Bob "Du kanske kan fråga på turistbyrån där borta"
+
+	"[CHEAT]":
+		GOTO CHEAT
+}
+
+Bob "Kom du just hit eller?"
+CHOICE {
+	"Ja, med båten":
+	"Mm, precis":
+	"Kanske det":
+	"Nej":
+}
+
+Bob "Jag såg dig gå av tror jag"
+Bob "Rest långt?"
+
+CHOICE {
+	"Nej inte så värst":
+		Bob "Gött"
+		GOTO AFTER_CIGG
+	"Rätt så":
+	"Ja, tog flera dagar":
+	"Mm":
+}
+
+Bob "Fan va drygt"
+
+[CIGG]
+Bob "Du ser lite sliten ut, vill du ha en cigg?"
+
+CHOICE {
+	"Nej tack, jag röker inte":
+	"Visst!":
+		Bob.TakeOutItem(Bobs_Cigg1)
+		WAIT Bob.HasHandItemOfType(Cigarette)
+		Bob.Give()
+		LISTEN Bob_give_Sebastian
+		CHOICE {
+			"Tack så hemskt mycket!":
+			"Wow, coolt!":
+		}
+}
+Bob "Inga problem"
+[CHEAT]
+Bob "Ha det bra"
+
+[AFTER_CIGG]
+Bob.StopTalking()
+DEFOCUS
+
+LISTEN Sebastian_talk_Bob
+FOCUS
+Bob.StartTalking()
+Bob "Du igen?"
+CHOICE {
+	"Ursäkta, det var inte meningen att störa":
+	"Jepp!":
+		Bob "Du var en glad prick du"
+		Bob "Jag måste chilla lite nu, vi ses"
+}
+Bob.StopTalking()
+DEFOCUS
+
+LISTEN Sebastian_talk_Bob
+Bob "Ursäkta men jag försöker softa lite här, kan vi snacka senare?"
