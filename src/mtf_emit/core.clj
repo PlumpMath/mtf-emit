@@ -1,11 +1,14 @@
 (ns mtf-emit.core
   (:gen-class))
 
-(def sentence-regex #"\"(.+)\"")
+(def sentence-regex #"\s\"(.+)\"")
 (def mtf-line-regex #"\"(.+)\" =>.+")
 
+(defn not-a-real-sentence [s]
+  (= \[ (first s)))
+
 (defn to-sentences [text]
-  (map second (re-seq sentence-regex text)))
+  (remove not-a-real-sentence (map second (re-seq sentence-regex text))))
 
 (defn get-already-translated [mtf-doc]
   (let [existing (re-seq mtf-line-regex mtf-doc)]
@@ -27,6 +30,13 @@
 
 (def langs #{"eng"})
 
+(defn spit-if-nonempty [path content]
+  (when (not= content "")
+    (spit path content)
+    (println (str "Emitted " path
+                  "\t Sentences translated: " @already-translated-count
+                  "/" @sentence-count))))
+
 (defn convert [input-path output-dir lang]
   (assert (string? input-path))
   (assert (contains? langs lang))
@@ -40,10 +50,7 @@
     (->> dia-contents
          to-sentences
          (to-doc already-translated)
-         (spit output-path))
-    (println (str "Emitted " output-path
-                  "\t Sentences translated: " @already-translated-count
-                  "/" @sentence-count))))
+         (spit-if-nonempty output-path))))
 
 (defn is-dia-file? [filename]
   (and (re-find #"([A-z0-9_]+)\.dia" filename)

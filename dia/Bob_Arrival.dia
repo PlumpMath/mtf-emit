@@ -1,3 +1,6 @@
+
+Bob.SetTimetable("Bob")
+
 LISTEN Sebastian_talk_Bob
 
 Sebastian "Yeah!!!"

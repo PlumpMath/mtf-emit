@@ -2,7 +2,7 @@
 "Tja" =>
 "God dag" =>
 "Läget?" =>
-"Det är kalas!" => "It's a party!"
+"Det är kalas!" =>
 "Vänta, har vi setts förrut?" =>
 "Jag vet inte! Har vi?" =>
 "Hmm... kanske?" =>
@@ -33,12 +33,10 @@
 "Va? Jodå!" =>
 "Ok, välkommen in" =>
 "Njae..." =>
-"Underage" =>
 "Jag får inte släppa in minderåriga" =>
 "OK, jag tänkte inte gå in ändå" =>
 "OK" =>
 "Nähä... synd" =>
 "Mm" =>
-"Underage" =>
 "Inga underåriga!" =>
 "God kväll!" =>
