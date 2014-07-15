@@ -33,9 +33,10 @@
 (defn spit-if-nonempty [path content]
   (when (not= content "")
     (spit path content)
-    (println (str "Emitted " path
-                  "\t Sentences translated: " @already-translated-count
-                  "/" @sentence-count))))
+    (println (str "[" @already-translated-count "/" @sentence-count "]"
+                  (if (= @already-translated-count @sentence-count) "\tDONE!" "\t")
+                  "\t"
+                  (last (clojure.string/split path #"/"))))))
 
 (defn convert [input-path output-dir lang]
   (assert (string? input-path))
