@@ -30,11 +30,15 @@
 
 (def langs #{"eng"})
 
+(defn percentage [x y]
+  (str (int (* 100 (float (/ x y)))) "% \t"))
+
 (defn spit-if-nonempty [path content]
   (when (not= content "")
     (spit path content)
-    (println (str "[" @already-translated-count "/" @sentence-count "]"
-                  (if (= @already-translated-count @sentence-count) "\tDONE!" "\t")
+    (println (str (if (= @already-translated-count @sentence-count) "DONE!   " "        ")
+                  (percentage @already-translated-count @sentence-count)
+                  "[" @already-translated-count "/" @sentence-count "]"
                   "\t"
                   (last (clojure.string/split path #"/"))))))
 
